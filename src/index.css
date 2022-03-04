@@ -5,3 +5,9 @@
 body {
   font-family: "Taviraj", serif;
 }
+
+.shadow-jutsu {
+  box-shadow: 2px 1px 23px 0px rgba(84, 84, 84, 0.77);
+  -webkit-box-shadow: 2px 1px 23px 0px rgba(84, 84, 84, 0.77);
+  -moz-box-shadow: 2px 1px 23px 0px rgba(84, 84, 84, 0.77);
+}
