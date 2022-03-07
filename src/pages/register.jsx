@@ -13,8 +13,9 @@ import LoginFoto from "./../assets/tangan.jpg";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import useLoading from "../hooks/useLoading";
 import { connect, useSelector } from "react-redux";
-import { loginAction } from "../redux/actions";
-import { useNavigate, Navigate, Link } from "react-router-dom";
+import { registerAction } from "../redux/actions";
+import { useNavigate, Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CssFormControl = styled(FormControl)({
   "& label.Mui-focused": {
@@ -56,10 +57,12 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const Login = ({ loginAction }) => {
+const Register = ({ registerAction }) => {
   const [input, setinput] = useState({
     username: "",
     password: "",
+    confirmPassword: "",
+    email: "",
   });
 
   const { loading } = useLoading();
@@ -68,9 +71,18 @@ const Login = ({ loginAction }) => {
     setinput({ ...input, [prop]: e.target.value });
   };
 
-  const loginHandle = (e) => {
+  const registerHandle = (e) => {
     e.preventDefault();
-    loginAction(input);
+    if (input.password !== input.confirmPassword) {
+      toast.error("password tidak sama dengan confirm", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        draggable: true,
+      });
+      return;
+    }
+    registerAction(input);
   };
 
   if (isLogin) {
@@ -90,7 +102,7 @@ const Login = ({ loginAction }) => {
         </div>
         <div className="w-3/5 px-8 py-8 flex flex-col justify-center">
           <div className="text-4xl text-center ">Login</div>
-          <form onSubmit={loginHandle}>
+          <form onSubmit={registerHandle}>
             <div className="mt-4">
               <CssTextField
                 // error
@@ -99,6 +111,17 @@ const Login = ({ loginAction }) => {
                 sx={{ width: "100%" }}
                 onChange={(e) => handleInput(e, "username")}
                 value={input.username}
+                // helperText="coba"
+              />
+            </div>
+            <div className="mt-4">
+              <CssTextField
+                // error
+                label="email"
+                type="email"
+                sx={{ width: "100%" }}
+                onChange={(e) => handleInput(e, "email")}
+                value={input.email}
                 // helperText="coba"
               />
             </div>
@@ -125,17 +148,37 @@ const Login = ({ loginAction }) => {
                 />
               </CssFormControl>
             </div>
+            <div className="mt-4">
+              <CssFormControl sx={{ width: "100%" }} color="">
+                <InputLabel>Confirm Password</InputLabel>
+                <OutlinedInput
+                  type="password"
+                  label="Confirm Password"
+                  onChange={(e) => handleInput(e, "confirmPassword")}
+                  value={input.confirmPassword}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        //   onClick={handleClickShowPassword}
+                        //   onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        <MdVisibility />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </CssFormControl>
+            </div>
             <div className="mt-4 ">
               <button
                 disabled={loading}
                 type="submit"
                 className="p-3 rounded bg-matoa-text-primary text-white "
               >
-                Login
+                Register
               </button>
-              <Link className="hover:text-matoa-text-primary" to="/register">
-                <div className="float-right text-sm">belum punya akun?</div>
-              </Link>
             </div>
           </form>
         </div>
@@ -144,4 +187,4 @@ const Login = ({ loginAction }) => {
   );
 };
 
-export default connect(null, { loginAction })(Login);
+export default connect(null, { registerAction })(Register);

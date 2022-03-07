@@ -1,12 +1,45 @@
 {
   "users": [
-    { "id": 1, "username": "dino11", "password": "strong9", "roleId": 2 },
-    { "id": 2, "username": "admin", "password": "strong9", "roleId": 1 }
+    {
+      "id": 1,
+      "username": "dino11",
+      "password": "strong9",
+      "roleId": 2
+    },
+    {
+      "id": 2,
+      "username": "admin",
+      "password": "strong9",
+      "roleId": 1
+    },
+    {
+      "username": "aqil",
+      "password": "abc123",
+      "email": "dsadasa@dasda.com",
+      "roleId": 2,
+      "id": 3
+    },
+    {
+      "username": "dika",
+      "password": "abc123",
+      "email": "dika@gmail.com",
+      "roleId": 2,
+      "id": 4
+    }
   ],
   "series": [
-    { "id": 1, "name": "Maple" },
-    { "id": 2, "name": "Ebony" },
-    { "id": 3, "name": "Featured" }
+    {
+      "id": 1,
+      "name": "Maple"
+    },
+    {
+      "id": 2,
+      "name": "Ebony"
+    },
+    {
+      "id": 3,
+      "name": "Featured"
+    }
   ],
   "products": [
     {

@@ -9,6 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
+import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../helpers";
@@ -18,25 +19,46 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
+import Swal from "sweetalert2";
 const ManageProduct = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(2);
   const [totalData, settotalData] = useState(0);
   const [data, setData] = useState([]);
+  const [series, setseries] = useState([]);
   const [open, setOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [idmenu, setidmenu] = useState(0);
   const openMenu = Boolean(anchorEl);
+
+  const [input, setinput] = useState({
+    name: "",
+    price: "",
+    image: "",
+    stock: "",
+    price: "",
+    series: "",
+  });
 
   const fetchData = async () => {
     let res = await axios.get(
       `${API_URL}/products?_page=${page + 1}&_limit=${rowsPerPage}`
     );
-
+    // let res1 = await axios.get(`${API_URL}/series`);
     setData(res.data);
+    // setseries(res1.data);
     settotalData(parseInt(res.headers["x-total-count"]));
   };
+  const fetchSeries = async () => {
+    let res1 = await axios.get(`${API_URL}/series`);
+
+    setseries(res1.data);
+  };
+  // getdata initial and diddupdate for change page
+  useEffect(() => {
+    fetchSeries();
+  }, []);
   useEffect(() => {
     fetchData();
   }, [page, rowsPerPage]);
@@ -47,12 +69,82 @@ const ManageProduct = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handleClickMenu = (event) => {
+  // menu
+  const handleClickMenu = (event, row) => {
+    console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
+    setidmenu(row);
   };
   const handleCloseMenu = () => {
     setAnchorEl(null);
+    setidmenu(0);
+  };
+
+  const handleInput = (e) => {
+    setinput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const onAddDataClick = async () => {
+    // console.log(input);
+    try {
+      await axios.post(`${API_URL}/products`, input);
+      fetchData();
+      setOpen(false);
+      setinput({
+        name: "",
+        price: "",
+        image: "",
+        stock: "",
+        price: "",
+        series: "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // delete feature
+  const onDeleteClick = async (id, index) => {
+    // Swal.fire({
+    //   title: `Are you sure delete ${data[index].name}?`,
+    //   text: "You won't be able to revert this!",
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, delete it!'
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     Swal.fire(
+    //       'Deleted!',
+    //       'Your file has been deleted.',
+    //       'success'
+    //     )
+    //   }
+    // })
+    try {
+      setAnchorEl(null);
+      let result = await Swal.fire({
+        title: `Are you sure delete ${data[index].name}?`,
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+      if (result.isConfirmed) {
+        await axios.delete(`${API_URL}/products/${id}`);
+        if (data.length == 1) {
+          // klo data yang terlihat tinggal 1 di page tersebut
+          setPage(page - 1);
+        } else {
+          fetchData();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -68,36 +160,72 @@ const ManageProduct = () => {
     setPage(0);
   };
 
+  const renderForm = (inputpar, handleCb) => {
+    return (
+      <>
+        <input
+          className="w-full my-2 placeholder:text-slate-400  bg-white  border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={inputpar.name}
+          onChange={handleCb}
+        />
+        <input
+          className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
+          type="number"
+          name="price"
+          placeholder="price"
+          value={inputpar.price}
+          onChange={handleCb}
+        />
+        <input
+          className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
+          type="number"
+          name="stock"
+          placeholder="stock"
+          value={inputpar.stock}
+          onChange={handleCb}
+        />
+        <input
+          className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
+          type="text"
+          name="image"
+          placeholder="image"
+          value={inputpar.image}
+          onChange={handleCb}
+        />
+        <select
+          value={inputpar.series}
+          onChange={handleCb}
+          name="series"
+          className="z-10 w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
+        >
+          <option value="" hidden>
+            pilih series
+          </option>
+          {/* <option value="dsa">pilih seriesdsadsad</option> */}
+          {series.map((val) => {
+            return (
+              <option value={val.name} key={val.id}>
+                {val.name}
+              </option>
+            );
+          })}
+        </select>
+      </>
+    );
+  };
+
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Data</DialogTitle>
-        <DialogContent dividers>
-          <input
-            className="w-full my-2 placeholder:text-slate-400  bg-white  border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
-            type="text"
-            placeholder="Name"
-          />
-          <input
-            className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
-            type="number"
-            placeholder="price"
-          />
-          <input
-            className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
-            type="number"
-            placeholder="stock"
-          />
-          <input
-            className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
-            type="text"
-            placeholder="image"
-          />
-        </DialogContent>
+        <DialogContent dividers>{renderForm(input, handleInput)}</DialogContent>
         <DialogActions>
           <button
             className="mt-2 px-3 py-1 rounded bg-matoa-text-primary text-white"
-            onClick={handleClose}
+            onClick={onAddDataClick}
           >
             Save
           </button>
@@ -128,7 +256,7 @@ const ManageProduct = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row) => (
+              {data.map((row, index) => (
                 <TableRow key={row.name}>
                   <TableCell component="th" scope="row">
                     {row.name}
@@ -137,23 +265,35 @@ const ManageProduct = () => {
                     {row.price}
                   </TableCell>
                   <TableCell style={{ minWidth: 160 }}>{row.series}</TableCell>
-                  <TableCell>series</TableCell>
-                  <TableCell onClick={handleClickMenu}>Menu</TableCell>
-
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={openMenu}
-                    onClose={handleCloseMenu}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button",
-                    }}
+                  <TableCell
+                    style={{ minWidth: 160, display: "flex" }}
+                    onClick={(e) => handleClickMenu(e, row.id)}
+                    className="cursor-pointer"
                   >
-                    <MenuItem onClick={handleCloseMenu}>
-                      Profile {row.id}
-                    </MenuItem>
-                    <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
-                    <MenuItem onClick={handleCloseMenu}>Logout</MenuItem>
-                  </Menu>
+                    Menu
+                    {idmenu === row.id ? (
+                      <RiArrowUpSLine className="my-1 ml-1" />
+                    ) : (
+                      <RiArrowDownSLine className="my-1 ml-1" />
+                    )}
+                  </TableCell>
+                  {idmenu === row.id ? (
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={openMenu}
+                      onClose={handleCloseMenu}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      <MenuItem onClick={handleCloseMenu}>
+                        Edit {row.id}
+                      </MenuItem>
+                      <MenuItem onClick={() => onDeleteClick(row.id, index)}>
+                        Delete
+                      </MenuItem>
+                    </Menu>
+                  ) : null}
                 </TableRow>
               ))}
 

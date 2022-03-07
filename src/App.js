@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "./helpers";
 import { useDispatch } from "react-redux";
+import Register from "./pages/register";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/admin/manage/product" element={<ManageProduct />} />
         </Routes>
       </div>
