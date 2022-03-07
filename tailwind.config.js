@@ -7,7 +7,7 @@ module.exports = {
         "matoa-text-primary": "#D84727",
       },
       spacing: {
-        "image-login": "80vh",
+        "image-login": "82vh",
       },
     },
   },

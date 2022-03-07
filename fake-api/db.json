@@ -1,0 +1,58 @@
+{
+  "users": [
+    { "id": 1, "username": "dino11", "password": "strong9", "roleId": 2 },
+    { "id": 2, "username": "admin", "password": "strong9", "roleId": 1 }
+  ],
+  "series": [
+    { "id": 1, "name": "Maple" },
+    { "id": 2, "name": "Ebony" },
+    { "id": 3, "name": "Featured" }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Way Kambas Maple",
+      "image": "",
+      "stock": 10,
+      "price": 1280000,
+      "series": "Maple",
+      "serieId": 1
+    },
+    {
+      "id": 2,
+      "name": "Tomia Ebony",
+      "image": "",
+      "stock": 10,
+      "price": 960000,
+      "series": "Ebony",
+      "serieId": 2
+    },
+    {
+      "id": 3,
+      "name": "Way Kambas Maples",
+      "image": "",
+      "stock": 10,
+      "price": 1280000,
+      "series": "Maple",
+      "serieId": 1
+    },
+    {
+      "id": 4,
+      "name": "Tomia Ebonys",
+      "image": "",
+      "stock": 10,
+      "price": 960000,
+      "series": "Ebony",
+      "serieId": 2
+    },
+    {
+      "id": 5,
+      "name": "Tomia Ebonysee",
+      "image": "",
+      "stock": 10,
+      "price": 960000,
+      "series": "Ebony",
+      "serieId": 2
+    }
+  ]
+}

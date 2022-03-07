@@ -3,6 +3,7 @@ const INITIAL_STATE = {
   isLogin: false,
   username: "",
   error_mes: "",
+  roleId: 0,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {

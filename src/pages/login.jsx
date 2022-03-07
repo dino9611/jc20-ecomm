@@ -12,6 +12,9 @@ import { Container } from "../components/general";
 import LoginFoto from "./../assets/tangan.jpg";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import useLoading from "../hooks/useLoading";
+import { connect, useSelector } from "react-redux";
+import { loginAction } from "../redux/actions";
+import { useNavigate, Navigate } from "react-router-dom";
 
 const CssFormControl = styled(FormControl)({
   "& label.Mui-focused": {
@@ -22,7 +25,7 @@ const CssFormControl = styled(FormControl)({
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#D84727",
+      //   borderColor: "#D84727",
     },
     "&:hover fieldset": {
       borderColor: "#D84727",
@@ -42,7 +45,7 @@ const CssTextField = styled(TextField)({
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#D84727",
+      //   borderColor: "#D84727",
     },
     "&:hover fieldset": {
       borderColor: "#D84727",
@@ -53,22 +56,31 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const Login = () => {
+const Login = ({ loginAction }) => {
   const [input, setinput] = useState({
     username: "",
     password: "",
   });
 
-  const { loading, doneAction, loadingAction } = useLoading();
-
+  const { loading } = useLoading();
+  const { isLogin } = useSelector((state) => state.user);
   const handleInput = (e, prop) => {
     setinput({ ...input, [prop]: e.target.value });
   };
 
+  const loginHandle = (e) => {
+    e.preventDefault();
+    loginAction(input);
+  };
+
+  if (isLogin) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
-    <Container className={"mt-5"}>
-      <div className=" flex rounded-lg bg-white shadow-jutsu overflow-hidden ">
-        <div className="w-3/5 h-image-login  ">
+    <Container className={"mt-3"}>
+      <div className="flex rounded-lg bg-white shadow-jutsu overflow-hidden ">
+        <div className="w-4/5 h-image-login  ">
           <img
             src={LoginFoto}
             width="100%"
@@ -76,18 +88,18 @@ const Login = () => {
             style={{ height: "100%" }}
           />
         </div>
-        <div className="w-2/5 px-6 py-8 flex flex-col justify-center">
-          <div className="text-3xl text-center text-matoa-text-primary">
-            Login {loading ? "abc" : "def"}
-          </div>
-          <form>
+        <div className="w-3/5 px-8 py-8 flex flex-col justify-center">
+          <div className="text-4xl text-center ">Login</div>
+          <form onSubmit={loginHandle}>
             <div className="mt-4">
               <CssTextField
+                // error
                 label="Username"
                 type="text"
                 sx={{ width: "100%" }}
                 onChange={(e) => handleInput(e, "username")}
                 value={input.username}
+                // helperText="coba"
               />
             </div>
             <div className="mt-4">
@@ -115,7 +127,8 @@ const Login = () => {
             </div>
             <div className="mt-4 ">
               <button
-                onClick={() => loadingAction()}
+                disabled={loading}
+                type="submit"
                 className="p-3 rounded bg-matoa-text-primary text-white "
               >
                 Login
@@ -128,4 +141,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default connect(null, { loginAction })(Login);
