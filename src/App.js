@@ -13,6 +13,7 @@ import axios from "axios";
 import { API_URL } from "./helpers";
 import { useDispatch } from "react-redux";
 import Register from "./pages/register";
+import ProductDetail from "./pages/productDetail";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,14 +34,18 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ backgroundColor: "#E5E5E5" }}>
       <Header />
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          {/* <Route path="/product/*" element={<ProductDetail />} />
+          <Route path="/product/:category" element={<ProductDetail />} /> */}
+          <Route path="/product/:category/:id" element={<ProductDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin/manage/product" element={<ManageProduct />} />
+          {/* <Route path="*" element={<ManageProduct />} /> */}
         </Routes>
       </div>
       <ToastContainer />

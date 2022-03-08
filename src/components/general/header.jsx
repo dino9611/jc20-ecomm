@@ -7,9 +7,11 @@ import { useSelector } from "react-redux";
 export const Header = () => {
   const { username, isLogin, roleId } = useSelector((state) => state.user);
   return (
-    <div className="container shadow-lg bg-white  md:px-32 px-10 py-4 flex ">
+    <div className="container  md:px-32 px-10 py-4 flex ">
       <div className="py-3">
-        <img src={Brand} alt="brand" width={"95%"} />
+        <Link to="/">
+          <img src={Brand} alt="brand" width={"95%"} />
+        </Link>
       </div>
       <div className="flex p-2 ml-auto mr-16 justify-evenly w-3/6 ">
         <div className="text-lg tracking-wider">Watches</div>

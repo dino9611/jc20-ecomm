@@ -44,8 +44,8 @@
   "products": [
     {
       "id": 1,
-      "name": "Way Kambas Maple",
-      "image": "",
+      "name": "Singo Maple",
+      "image": "https://cf.shopee.co.id/file/6ea84eec02c2ac45912de6785c99d687",
       "stock": 10,
       "price": 1280000,
       "series": "Maple",
@@ -53,8 +53,8 @@
     },
     {
       "id": 2,
-      "name": "Tomia Ebony",
-      "image": "",
+      "name": "Singo Ebony",
+      "image": "https://cf.shopee.co.id/file/bd34721cccc544312b9e486895be48d6",
       "stock": 10,
       "price": 960000,
       "series": "Ebony",
@@ -62,8 +62,8 @@
     },
     {
       "id": 3,
-      "name": "Way Kambas Maples",
-      "image": "",
+      "name": "Rakai Ebony",
+      "image": "https://cf.shopee.co.id/file/b287b1c6be6c35b8c12f7007816ed7bf",
       "stock": 10,
       "price": 1280000,
       "series": "Maple",
@@ -71,8 +71,8 @@
     },
     {
       "id": 4,
-      "name": "Tomia Ebonys",
-      "image": "",
+      "name": "Way Kambas Maple",
+      "image": "https://cf.shopee.co.id/file/5c51c341cfdc824115530448b79ef287",
       "stock": 10,
       "price": 960000,
       "series": "Ebony",
@@ -80,8 +80,8 @@
     },
     {
       "id": 5,
-      "name": "Tomia Ebonysee",
-      "image": "",
+      "name": "Tomia Ebony",
+      "image": "https://images.tokopedia.net/img/cache/500-square/product-1/2018/9/8/1729566/1729566_5a99307a-09d9-4c2f-866a-2824a2823e0a_500_600.jpg",
       "stock": 10,
       "price": 960000,
       "series": "Ebony",

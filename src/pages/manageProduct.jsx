@@ -20,6 +20,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Swal from "sweetalert2";
+
 const ManageProduct = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(2);

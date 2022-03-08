@@ -22,6 +22,28 @@ body {
   background-color: blueviolet;
 }
 
+.monthly-home {
+  position: relative;
+  top: -30px;
+}
+.monthly-height {
+  height: 52vh;
+  transition: 300ms;
+}
+
+.add-to-cart {
+  opacity: 0;
+}
+
+.monthly-height:hover .add-to-cart {
+  opacity: 1;
+  /* transition: 500ms; */
+}
+
+.monthly-height:hover {
+  height: 60vh;
+  transition: 300ms;
+}
 /* .MuiDialog-container {
   background-color: blue;
 } */
