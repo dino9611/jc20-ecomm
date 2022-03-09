@@ -55,7 +55,7 @@ const Home = () => {
   return (
     <Container>
       <div className="mt-5 text-matoa-text">
-        <h1 className="text-2xl ">Monthly Deals</h1>
+        <h1 className="text-2xl ">Monthly Deals 10</h1>
         <Divider
           sx={{ backgroundColor: "black", width: "8%", borderColor: "#333333" }}
         />
