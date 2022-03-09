@@ -2,7 +2,7 @@ import { Container } from "../components/general";
 import Divider from "@mui/material/Divider";
 import axios from "axios";
 
-import { API_URL } from "../helpers";
+import { API_URL, converToRupiah } from "../helpers";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 const Card = ({ data }) => {
@@ -17,7 +17,7 @@ const Card = ({ data }) => {
       </div>
       <div className="text-xl my-1">{data.name}</div>
       <div className="text-slate-400 my-1">20% Off</div>
-      <div className="text-xl my-1">{data.price}</div>
+      <div className="text-xl my-1">{converToRupiah(data.price)}</div>
       <div className="add-to-cart  flex mt-5  w-100 justify-between ">
         <button className="mr-3">Love</button>
         <Link state={data} to={`/product/watches/${data.id}`}>

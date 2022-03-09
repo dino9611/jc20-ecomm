@@ -4,8 +4,11 @@ import { IconButton } from "@mui/material";
 import Brand from "./../../assets/brand.svg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ModalCart from "./modalCart";
+import { useState } from "react";
 export const Header = () => {
   const { username, isLogin, roleId } = useSelector((state) => state.user);
+  const [open, setopen] = useState(false);
   return (
     <div className="container  md:px-32 px-10 py-4 flex ">
       <div className="py-3">
@@ -42,11 +45,15 @@ export const Header = () => {
             Manage product
           </Link>
         ) : (
-          <div className="cursor-pointer rounded-full p-2 bg-matoa-primary">
+          <div
+            onClick={() => setopen(true)}
+            className="cursor-pointer rounded-full p-2 bg-matoa-primary"
+          >
             <BsBag className="text-2xl" />
           </div>
         )}
       </div>
+      <ModalCart open={open} setopen={setopen} />
     </div>
   );
 };
