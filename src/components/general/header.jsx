@@ -26,7 +26,6 @@ export const Header = () => {
         <IconButton size="medium">
           <BsSearch />
         </IconButton>
-
         {isLogin ? (
           <div className="cursor-pointer flex p-2">
             <AiOutlineUser className="text-2xl mr-2" />

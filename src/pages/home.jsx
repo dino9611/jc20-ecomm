@@ -5,6 +5,7 @@ import axios from "axios";
 import { API_URL, converToRupiah } from "../helpers";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 const Card = ({ data }) => {
   return (
     <div className="prod-card bg-white px-5 w-1/4 monthly-height">
@@ -55,7 +56,12 @@ const Home = () => {
   return (
     <Container>
       <div className="mt-5 text-matoa-text">
-        <h1 className="text-2xl ">Monthly Deals 10</h1>
+        <h1 className="text-2xl ">
+          Monthly Deals{" "}
+          {/* <Button sx={{ backgroundColor: "primary.main" }} variant="contained">
+            tes
+          </Button> */}
+        </h1>
         <Divider
           sx={{ backgroundColor: "black", width: "8%", borderColor: "#333333" }}
         />
