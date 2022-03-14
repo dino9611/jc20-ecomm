@@ -43,13 +43,26 @@ const ManageProduct = () => {
   });
 
   const fetchData = async () => {
-    let res = await axios.get(
-      `${API_URL}/products?_page=${page + 1}&_limit=${rowsPerPage}`
-    );
-    // let res1 = await axios.get(`${API_URL}/series`);
-    setData(res.data);
-    // setseries(res1.data);
-    settotalData(parseInt(res.headers["x-total-count"]));
+    try {
+      let res = await axios.get(
+        `${API_URL}/products?_page=${page + 1}&_limit=${rowsPerPage}`
+      );
+      // axios.get( `${API_URL}/products?_page=${page + 1}&_limit=${rowsPerPage}`)
+      // .then((res)=>{
+
+      // }).catch((err)=>{
+
+      // }).finally(()=>{
+
+      // })
+      // console.log('tes')
+      // let res1 = await axios.get(`${API_URL}/series`);
+      setData(res.data);
+      // setseries(res1.data);
+      settotalData(parseInt(res.headers["x-total-count"]));
+    } catch (error) {
+      console.log(error);
+    }
   };
   const fetchSeries = async () => {
     let res1 = await axios.get(`${API_URL}/series`);
@@ -60,9 +73,14 @@ const ManageProduct = () => {
   useEffect(() => {
     fetchSeries();
   }, []);
+  // ini didupdate
   useEffect(() => {
     fetchData();
+    return () => {
+      console.log("unmount dari manage");
+    };
   }, [page, rowsPerPage]);
+
   //   modal
   const handleClickOpen = () => {
     setOpen(true);

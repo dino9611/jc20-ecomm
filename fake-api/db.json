@@ -4,27 +4,33 @@
       "id": 1,
       "username": "dino11",
       "password": "strong9",
-      "roleId": 2
+      "email": "dika@gmail.com",
+      "roleId": 2,
+      "cart": []
     },
     {
       "id": 2,
       "username": "admin",
       "password": "strong9",
-      "roleId": 1
+      "email": "dika@gmail.com",
+      "roleId": 1,
+      "cart": []
     },
     {
       "username": "aqil",
       "password": "abc123",
       "email": "dsadasa@dasda.com",
       "roleId": 2,
-      "id": 3
+      "id": 3,
+      "cart": []
     },
     {
       "username": "dika",
       "password": "abc123",
       "email": "dika@gmail.com",
       "roleId": 2,
-      "id": 4
+      "id": 4,
+      "cart": []
     }
   ],
   "series": [

@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   username: "",
   error_mes: "",
   roleId: 0,
+  cart: [],
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {

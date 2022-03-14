@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../helpers";
 import { toast } from "react-toastify";
 
+export const login = (data) => {
+  return {
+    type: "LOGIN",
+    payload: data,
+  };
+};
+
 export const loginAction = ({ username, password }) => {
   return async (dispatch) => {
     try {
@@ -17,6 +24,7 @@ export const loginAction = ({ username, password }) => {
         throw { message: "user tidak ditemukan" };
       }
       dispatch({ type: "LOGIN", payload: res.data[0] });
+      // dispatch(login(res.data[0]));
       localStorage.setItem("id", res.data[0].id);
       toast.success("berhasil Login", {
         position: "top-right",

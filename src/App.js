@@ -35,7 +35,7 @@ function App() {
       setloading(false);
     }
   };
-
+  // ini didmount
   useEffect(() => {
     keepLog();
   }, []);

@@ -26,6 +26,7 @@ body {
   position: relative;
   top: -30px;
 }
+
 .monthly-height {
   height: 52vh;
   transition: 300ms;

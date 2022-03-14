@@ -32,7 +32,7 @@ const Card = ({ data }) => {
 };
 
 const Home = () => {
-  const [monthly, setmonthly] = useState([]);
+  const [monthly, setmonthly] = useState([{ nama: { nama: "tes" } }]);
 
   const fetchData = async () => {
     try {

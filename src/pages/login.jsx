@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TextField,
   OutlinedInput,
@@ -8,7 +8,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Container } from "../components/general";
+import { Button, Container } from "../components/general";
 import LoginFoto from "./../assets/tangan.jpg";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import useLoading from "../hooks/useLoading";
@@ -67,6 +67,15 @@ const Login = ({ loginAction }) => {
   const handleInput = (e, prop) => {
     setinput({ ...input, [prop]: e.target.value });
   };
+  // didupdate
+  // useEffect(() => {
+
+  // });
+
+  // didmount
+  // useEffect(() => {
+
+  // },[]);
 
   const loginHandle = (e) => {
     e.preventDefault();
@@ -126,13 +135,16 @@ const Login = ({ loginAction }) => {
               </CssFormControl>
             </div>
             <div className="mt-4 ">
-              <button
+              <Button className="p-3" type="submit" disabled={loading}>
+                Login
+              </Button>
+              {/* <button
                 disabled={loading}
                 type="submit"
                 className="p-3 rounded bg-matoa-text-primary text-white "
               >
                 Login
-              </button>
+              </button> */}
               <Link className="hover:text-matoa-text-primary" to="/register">
                 <div className="float-right text-sm">belum punya akun?</div>
               </Link>
