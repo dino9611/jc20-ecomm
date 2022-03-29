@@ -28,6 +28,7 @@ const ManageProduct = () => {
   const [data, setData] = useState([]);
   const [series, setseries] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [idmenu, setidmenu] = useState(0);
@@ -42,7 +43,13 @@ const ManageProduct = () => {
     series: "",
   });
 
+  const [inputEdit, setinputEdit] = useState({
+    name: "",
+    price: "",
+  });
+
   const [fileupload, setupload] = useState(null);
+  const [fileuploadEdit, setuploadEdit] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -105,7 +112,9 @@ const ManageProduct = () => {
   const handleInput = (e) => {
     setinput({ ...input, [e.target.name]: e.target.value });
   };
-
+  const handleInputEdit = (e) => {
+    setinputEdit({ ...inputEdit, [e.target.name]: e.target.value });
+  };
   const onAddDataClick = async () => {
     // console.log(input);
     const formData = new FormData();
@@ -186,6 +195,16 @@ const ManageProduct = () => {
     }
   };
 
+  //
+  const onFileEditChange = (e) => {
+    console.log(e.target.files); // ini file dan pastinya array
+    if (e.target.files[0]) {
+      setuploadEdit(e.target.files[0]);
+    } else {
+      setuploadEdit(null);
+    }
+  };
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - totalData) : 0;
@@ -199,7 +218,37 @@ const ManageProduct = () => {
     setPage(0);
   };
 
-  const renderForm = (inputpar, handleCb) => {
+  const onEditClick = (index) => {
+    setinputEdit({ ...data[index] });
+    setOpenEdit(true);
+  };
+
+  const onSaveDataCLick = async () => {
+    const formData = new FormData();
+    let insertData = {
+      name: inputEdit.name,
+      price: inputEdit.price,
+    };
+    formData.append("products", fileuploadEdit);
+    formData.append("data", JSON.stringify(insertData));
+
+    try {
+      await axios.put(`${API_URL}/product/${inputEdit.id}`, formData);
+      fetchData();
+      setOpenEdit(false);
+      setinput({
+        name: "",
+        price: "",
+      });
+      handleCloseMenu();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setuploadEdit(null);
+    }
+  };
+
+  const renderForm = (inputpar, handleCb, edit) => {
     return (
       <>
         <input
@@ -226,20 +275,45 @@ const ManageProduct = () => {
           value={inputpar.stock}
           onChange={handleCb}
         /> */}
-        <input
-          id="contained-button-file"
-          className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
-          type="file"
-          style={{ display: "none" }}
-          name="image"
-          placeholder="image"
-          accept=".gif,.jpg,.jpeg,.png"
-          onChange={onFileChange}
-        />
-        <label htmlFor="contained-button-file">
-          <button className="bg-gray-800">upload file</button>
-        </label>
-        {fileupload ? <img src={URL.createObjectURL(fileupload)} /> : null}
+        {edit ? (
+          <>
+            <input
+              id="contained-button-file"
+              className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
+              type="file"
+              style={{ display: "none" }}
+              name="image"
+              placeholder="image"
+              accept=".gif,.jpg,.jpeg,.png"
+              onChange={onFileEditChange}
+            />
+
+            <label htmlFor="contained-button-file" className="bg-amber-400 ">
+              upload
+            </label>
+            {fileuploadEdit ? (
+              <img src={URL.createObjectURL(fileuploadEdit)} />
+            ) : null}
+          </>
+        ) : (
+          <>
+            <input
+              id="contained-button-file"
+              className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
+              type="file"
+              style={{ display: "none" }}
+              name="image"
+              placeholder="image"
+              accept=".gif,.jpg,.jpeg,.png"
+              onChange={onFileChange}
+            />
+
+            <label htmlFor="contained-button-file" className="bg-amber-400 ">
+              upload
+            </label>
+            {fileupload ? <img src={URL.createObjectURL(fileupload)} /> : null}
+          </>
+        )}
         {/* <select
           value={inputpar.series}
           onChange={handleCb}
@@ -264,6 +338,26 @@ const ManageProduct = () => {
 
   return (
     <>
+      <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
+        <DialogTitle>Edit Data</DialogTitle>
+        <DialogContent dividers>
+          {renderForm(inputEdit, handleInputEdit, true)}
+        </DialogContent>
+        <DialogActions>
+          <button
+            className="mt-2 px-3 py-1 rounded bg-matoa-text-primary text-white"
+            onClick={onSaveDataCLick}
+          >
+            Save
+          </button>
+          <button
+            className="mt-2 px-3 py-1 rounded bg-gray-500 text-white"
+            onClick={() => setOpenEdit(false)}
+          >
+            Close
+          </button>
+        </DialogActions>
+      </Dialog>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Data</DialogTitle>
         <DialogContent dividers>{renderForm(input, handleInput)}</DialogContent>
@@ -339,7 +433,7 @@ const ManageProduct = () => {
                         "aria-labelledby": "basic-button",
                       }}
                     >
-                      <MenuItem onClick={handleCloseMenu}>
+                      <MenuItem onClick={() => onEditClick(index)}>
                         Edit {row.id}
                       </MenuItem>
                       <MenuItem onClick={() => onDeleteClick(row.id, index)}>
