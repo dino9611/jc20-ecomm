@@ -23,7 +23,7 @@ import Swal from "sweetalert2";
 
 const ManageProduct = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalData, settotalData] = useState(0);
   const [data, setData] = useState([]);
   const [series, setseries] = useState([]);
@@ -42,11 +42,14 @@ const ManageProduct = () => {
     series: "",
   });
 
+  const [fileupload, setupload] = useState(null);
+
   const fetchData = async () => {
     try {
-      let res = await axios.get(
-        `${API_URL}/products?_page=${page + 1}&_limit=${rowsPerPage}`
-      );
+      // let res = await axios.get(
+      //   `${API_URL}/products?_page=${page + 1}&_limit=${rowsPerPage}`
+      // );
+      let res = await axios.get(`${API_URL}/product`);
       // axios.get( `${API_URL}/products?_page=${page + 1}&_limit=${rowsPerPage}`)
       // .then((res)=>{
 
@@ -71,7 +74,7 @@ const ManageProduct = () => {
   };
   // getdata initial and diddupdate for change page
   useEffect(() => {
-    fetchSeries();
+    // fetchSeries();
   }, []);
   // ini didupdate
   useEffect(() => {
@@ -105,8 +108,16 @@ const ManageProduct = () => {
 
   const onAddDataClick = async () => {
     // console.log(input);
+    const formData = new FormData();
+    let insertData = {
+      name: input.name,
+      price: input.price,
+    };
+    formData.append("products", fileupload);
+    formData.append("data", JSON.stringify(insertData));
+
     try {
-      await axios.post(`${API_URL}/products`, input);
+      await axios.post(`${API_URL}/product`, formData);
       fetchData();
       setOpen(false);
       setinput({
@@ -114,7 +125,6 @@ const ManageProduct = () => {
         price: "",
         image: "",
         stock: "",
-        price: "",
         series: "",
       });
     } catch (error) {
@@ -166,6 +176,16 @@ const ManageProduct = () => {
     }
   };
 
+  // onchange file
+  const onFileChange = (e) => {
+    console.log(e.target.files); // ini file dan pastinya array
+    if (e.target.files[0]) {
+      setupload(e.target.files[0]);
+    } else {
+      setupload(null);
+    }
+  };
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - totalData) : 0;
@@ -198,23 +218,29 @@ const ManageProduct = () => {
           value={inputpar.price}
           onChange={handleCb}
         />
-        <input
+        {/* <input
           className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
           type="number"
           name="stock"
           placeholder="stock"
           value={inputpar.stock}
           onChange={handleCb}
-        />
+        /> */}
         <input
+          id="contained-button-file"
           className="w-full my-2 placeholder:text-slate-400  bg-white S border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-matoa-text-primary focus:ring-matoa-text-primary focus:ring-1 sm:text-sm"
-          type="text"
+          type="file"
+          style={{ display: "none" }}
           name="image"
           placeholder="image"
-          value={inputpar.image}
-          onChange={handleCb}
+          accept=".gif,.jpg,.jpeg,.png"
+          onChange={onFileChange}
         />
-        <select
+        <label htmlFor="contained-button-file">
+          <button className="bg-gray-800">upload file</button>
+        </label>
+        {fileupload ? <img src={URL.createObjectURL(fileupload)} /> : null}
+        {/* <select
           value={inputpar.series}
           onChange={handleCb}
           name="series"
@@ -222,16 +248,16 @@ const ManageProduct = () => {
         >
           <option value="" hidden>
             pilih series
-          </option>
-          {/* <option value="dsa">pilih seriesdsadsad</option> */}
-          {series.map((val) => {
+          </option> */}
+        {/* <option value="dsa">pilih seriesdsadsad</option> */}
+        {/* {series.map((val) => {
             return (
               <option value={val.name} key={val.id}>
                 {val.name}
               </option>
             );
-          })}
-        </select>
+          })} */}
+        {/* </select> */}
       </>
     );
   };
@@ -270,7 +296,7 @@ const ManageProduct = () => {
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>price</TableCell>
-                <TableCell>series</TableCell>
+                <TableCell>Image</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
@@ -283,7 +309,15 @@ const ManageProduct = () => {
                   <TableCell min style={{ minWidth: 160 }}>
                     {row.price}
                   </TableCell>
-                  <TableCell style={{ minWidth: 160 }}>{row.series}</TableCell>
+                  <TableCell min style={{ minWidth: 160 }}>
+                    <img
+                      src={API_URL + row.image}
+                      width="100"
+                      height="100"
+                      alt={row.image}
+                    />
+                  </TableCell>
+                  {/* <TableCell style={{ minWidth: 160 }}>{row.series}</TableCell> */}
                   <TableCell
                     style={{ minWidth: 160, display: "flex" }}
                     onClick={(e) => handleClickMenu(e, row.id)}
@@ -325,7 +359,7 @@ const ManageProduct = () => {
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[2, 4, { label: "All", value: -1 }]}
+                  rowsPerPageOptions={[10, { label: "All", value: -1 }]}
                   colSpan={3}
                   count={totalData}
                   rowsPerPage={rowsPerPage}

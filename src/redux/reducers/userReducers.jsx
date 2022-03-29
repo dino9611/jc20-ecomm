@@ -3,7 +3,7 @@ const INITIAL_STATE = {
   isLogin: false,
   username: "",
   error_mes: "",
-  roleId: 0,
+  roleId: 1,
   cart: [],
 };
 

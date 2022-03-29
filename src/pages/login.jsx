@@ -74,7 +74,9 @@ const Login = ({ loginAction }) => {
 
   // didmount
   // useEffect(() => {
+  // return ()=>{
 
+  // }
   // },[]);
 
   const loginHandle = (e) => {
@@ -83,6 +85,8 @@ const Login = ({ loginAction }) => {
   };
 
   if (isLogin) {
+    // redirect to home
+
     return <Navigate to="/" replace />;
   }
 
