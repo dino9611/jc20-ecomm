@@ -101,7 +101,7 @@ const Register = ({ registerAction }) => {
           />
         </div>
         <div className="w-3/5 px-8 py-8 flex flex-col justify-center">
-          <div className="text-4xl text-center ">Login</div>
+          <div className="text-4xl text-center ">Register</div>
           <form onSubmit={registerHandle}>
             <div className="mt-4">
               <CssTextField

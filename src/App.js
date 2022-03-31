@@ -17,6 +17,7 @@ import ProductDetail from "./pages/productDetail";
 import useUser from "./hooks/useUser";
 import Admin from "./pages/admin";
 import NotFound from "./pages/notFound";
+import Verified from "./pages/verified";
 
 function App() {
   const { roleId } = useUser();
@@ -24,10 +25,16 @@ function App() {
   const dispatch = useDispatch();
   const keepLog = async () => {
     try {
-      let id = localStorage.getItem("id");
-      let res = await axios.get(`${API_URL}/users/${id}`);
-      // masukkan ke redux
-      dispatch({ type: "LOGIN", payload: res.data });
+      let token = localStorage.getItem("token");
+      if (token) {
+        let res = await axios.get(`${API_URL}/auth/keeplogin`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        // masukkan ke redux
+        dispatch({ type: "LOGIN", payload: res.data });
+      }
     } catch (error) {
       console.log(error);
       dispatch({ error: "network error" });
@@ -55,6 +62,7 @@ function App() {
           <Route path="/product/:category" element={<ProductDetail />} /> */}
           <Route path="/product/:category/:id" element={<ProductDetail />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verified/:token" element={<Verified />} />
           {roleId === 1
             ? [
                 <Route path="/admin" element={<Admin />} />,
