@@ -3,8 +3,8 @@ import { Header } from "./components/general";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Home from "./pages/home";
-import ManageProduct from "./pages/manageProduct";
-
+import ManageProduct from "./pages/admin/manageProduct";
+import LeftNav from "./components/admin/leftNav";
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -15,13 +15,14 @@ import { useDispatch } from "react-redux";
 import Register from "./pages/register";
 import ProductDetail from "./pages/productDetail";
 import useUser from "./hooks/useUser";
-import Admin from "./pages/admin";
+import Admin from "./pages/admin/admin";
 import NotFound from "./pages/notFound";
 import Verified from "./pages/verified";
 import Profile from "./pages/profile";
+import AddData from "./pages/admin/addData";
 
 function App() {
-  const { roleId } = useUser();
+  const { roles_id } = useUser();
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
   const keepLog = async () => {
@@ -65,12 +66,24 @@ function App() {
           <Route path="/product/:category/:id" element={<ProductDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verified/:token" element={<Verified />} />
-          {roleId === 1
+          {roles_id === 1
             ? [
                 <Route path="/admin" element={<Admin />} />,
                 <Route
                   path="/admin/manage/product"
-                  element={<ManageProduct />}
+                  element={
+                    <LeftNav>
+                      <ManageProduct />
+                    </LeftNav>
+                  }
+                />,
+                <Route
+                  path="/admin/manage/product/add"
+                  element={
+                    <LeftNav>
+                      <AddData />
+                    </LeftNav>
+                  }
                 />,
               ]
             : null}

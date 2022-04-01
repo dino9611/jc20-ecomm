@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_URL } from "../helpers";
+import { API_URL } from "../../helpers";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -376,7 +376,7 @@ const ManageProduct = () => {
           </button>
         </DialogActions>
       </Dialog>
-      <div className="left-header-admin">header Left</div>
+
       <div className="mt-3 ml-72">
         <button
           className="px-3 py-1 rounded bg-matoa-text-primary text-white"

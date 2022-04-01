@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import ModalCart from "./modalCart";
 import { useState } from "react";
 export const Header = () => {
-  const { username, isLogin, roleId } = useSelector((state) => state.user);
+  const { username, isLogin, roles_id } = useSelector((state) => state.user);
   const [open, setopen] = useState(false);
   return (
     <div className="container  md:px-32 px-10 py-4 flex ">
@@ -39,7 +39,7 @@ export const Header = () => {
             </div>
           </Link>
         )}
-        {roleId === 1 ? (
+        {roles_id === 1 ? (
           <Link className="p-2 min-w-max" to="/admin/manage/product">
             Manage product
           </Link>
