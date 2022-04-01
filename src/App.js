@@ -18,6 +18,7 @@ import useUser from "./hooks/useUser";
 import Admin from "./pages/admin";
 import NotFound from "./pages/notFound";
 import Verified from "./pages/verified";
+import Profile from "./pages/profile";
 
 function App() {
   const { roleId } = useUser();
@@ -60,6 +61,7 @@ function App() {
 
           {/* <Route path="/product/*" element={<ProductDetail />} />
           <Route path="/product/:category" element={<ProductDetail />} /> */}
+          <Route path="/profile" element={<Profile />} />
           <Route path="/product/:category/:id" element={<ProductDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verified/:token" element={<Verified />} />

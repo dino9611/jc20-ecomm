@@ -14,18 +14,13 @@ export const loginAction = ({ username, password }) => {
   return async (dispatch) => {
     try {
       dispatch({ type: "LOADING" });
-      let res = await axios.get(`${API_URL}/users`, {
-        params: {
-          username: username,
-          password,
-        },
+      let res = await axios.post(`${API_URL}/auth/login`, {
+        username: username,
+        password,
       });
-      if (!res.data.length) {
-        throw { message: "user tidak ditemukan" };
-      }
-      dispatch({ type: "LOGIN", payload: res.data[0] });
+      dispatch({ type: "LOGIN", payload: res.data });
       // dispatch(login(res.data[0]));
-      localStorage.setItem("id", res.data[0].id);
+      localStorage.setItem("token", res.headers["x-token-access"]);
       toast.success("berhasil Login", {
         position: "top-right",
         autoClose: 3000,
@@ -33,7 +28,16 @@ export const loginAction = ({ username, password }) => {
         draggable: true,
       });
     } catch (error) {
-      dispatch({ type: "ERROR", payload: error.message || "network error" });
+      toast.error(error.response.data.message || "network error", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        draggable: true,
+      });
+      // dispatch({
+      //   type: "ERROR",
+      //   payload: error.response.data.message || "network error",
+      // });
     } finally {
       dispatch({ type: "DONE" });
     }
@@ -52,7 +56,7 @@ export const registerAction = ({ username, password, email }) => {
         email,
       });
       dispatch({ type: "LOGIN", payload: res1.data });
-      // pasang id on localstorage
+      // pasang token on localstorage
       localStorage.setItem("token", res1.headers["x-token-access"]);
       toast.success("berhasil register", {
         position: "top-right",
@@ -61,10 +65,10 @@ export const registerAction = ({ username, password, email }) => {
         draggable: true,
       });
     } catch (error) {
-      dispatch({
-        type: "ERROR",
-        payload: error.response.data.message || "network error",
-      });
+      // dispatch({
+      //   type: "ERROR",
+      //   payload: error.response.data.message || "network error",
+      // });
       toast.error(error.response.data.message || "network error", {
         position: "top-right",
         autoClose: 3000,
