@@ -20,6 +20,8 @@ import NotFound from "./pages/notFound";
 import Verified from "./pages/verified";
 import Profile from "./pages/profile";
 import AddData from "./pages/admin/addData";
+import Chat from "./pages/chat";
+import PublicLiveChat from "./pages/publicChat";
 
 function App() {
   const { roles_id } = useUser();
@@ -63,6 +65,8 @@ function App() {
           {/* <Route path="/product/*" element={<ProductDetail />} />
           <Route path="/product/:category" element={<ProductDetail />} /> */}
           <Route path="/profile" element={<Profile />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/public/chat" element={<PublicLiveChat />} />
           <Route path="/product/:category/:id" element={<ProductDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verified/:token" element={<Verified />} />

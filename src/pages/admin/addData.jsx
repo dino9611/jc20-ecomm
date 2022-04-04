@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
+import { API_URL } from "../../helpers";
 
 const AddData = () => {
   // {
@@ -11,10 +13,10 @@ const AddData = () => {
   //         images:[]
   //     }]
   // }
-  {
-    caption: "dadsad";
-  }
-  [];
+  //   {
+  //     caption: "dadsad";
+  //   }
+  //   [];
 
   const [input, setinput] = useState({
     name: "",
@@ -61,12 +63,12 @@ const AddData = () => {
     setmodel([...model]);
   };
 
-  const saveData = () => {
+  const saveData = async () => {
     const formData = new FormData();
 
     model.forEach((val, index) => {
       val.images.forEach((val1) => {
-        formData.append("product" + (index + 1), val1);
+        formData.append("model" + (index + 1), val1);
       });
     });
     // PISAH NAME DAN IMAGES DI MODEL
@@ -79,8 +81,20 @@ const AddData = () => {
       desc: "bla",
       model: modelNew,
     };
-
+    console.log(dataUpload);
+    const token = localStorage.getItem("token");
     formData.append("data", JSON.stringify(dataUpload));
+    console.log(formData);
+    try {
+      let res = await axios.post(`${API_URL}/product`, formData, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderModelinput = () => {
@@ -148,7 +162,12 @@ const AddData = () => {
     });
   };
 
-  return <div className="mt-3 ml-72">{renderModelinput()}</div>;
+  return (
+    <div className="mt-3 ml-72">
+      {renderModelinput()}
+      <button onClick={saveData}>save data</button>
+    </div>
+  );
 };
 
 export default AddData;

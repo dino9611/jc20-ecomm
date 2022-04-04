@@ -16,6 +16,7 @@ export const loginAction = ({ username, password }) => {
       dispatch({ type: "LOADING" });
       let res = await axios.post(`${API_URL}/auth/login`, {
         username: username,
+        email: username,
         password,
       });
       dispatch({ type: "LOGIN", payload: res.data });
