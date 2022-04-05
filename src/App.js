@@ -1,6 +1,6 @@
 import "./App.css";
 import { Header } from "./components/general";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useResolvedPath } from "react-router-dom";
 import Login from "./pages/login";
 import Home from "./pages/home";
 import ManageProduct from "./pages/admin/manageProduct";
@@ -22,8 +22,12 @@ import Profile from "./pages/profile";
 import AddData from "./pages/admin/addData";
 import Chat from "./pages/chat";
 import PublicLiveChat from "./pages/publicChat";
+import { useAuth0 } from "@auth0/auth0-react";
+import Auth0 from "./pages/auth0";
 
 function App() {
+  const { user, isAuthenticated, isLoading, logout, getAccessTokenSilently } =
+    useAuth0();
   const { roles_id } = useUser();
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
@@ -54,9 +58,24 @@ function App() {
   if (loading) {
     return <div>Loading</div>;
   }
+
+  const gettoken = async () => {
+    let token = await getAccessTokenSilently();
+    console.log(token);
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#E5E5E5" }}>
       <Header />
+      {/* <div>
+        <pre>{JSON.stringify(user)}</pre>
+      </div>
+      <div>
+        <pre>{JSON.stringify(isAuthenticated)}</pre>
+      </div>
+
+      <button onClick={logout}>logout</button>
+      <button onClick={gettoken}>token</button> */}
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -70,6 +89,7 @@ function App() {
           <Route path="/product/:category/:id" element={<ProductDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verified/:token" element={<Verified />} />
+          <Route path="/auth0" element={<Auth0 />} />
           {roles_id === 1
             ? [
                 <Route path="/admin" element={<Admin />} />,

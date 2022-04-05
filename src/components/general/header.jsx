@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ModalCart from "./modalCart";
 import { useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 export const Header = () => {
+  const { loginWithPopup } = useAuth0();
   const { username, isLogin, roles_id } = useSelector((state) => state.user);
   const [open, setopen] = useState(false);
   return (
@@ -38,6 +40,10 @@ export const Header = () => {
               Log In
             </div>
           </Link>
+          // <div className="flex p-2" onClick={loginWithPopup}>
+          //   <AiOutlineUser className="text-2xl mr-2" />
+          //   Log In
+          // </div>
         )}
         {roles_id === 1 ? (
           <Link className="p-2 min-w-max" to="/admin/manage/product">

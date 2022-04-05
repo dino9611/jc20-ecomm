@@ -5,6 +5,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/reducers";
+import { Auth0Provider } from "@auth0/auth0-react";
 // import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -34,13 +35,21 @@ const theme = createTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
-    </Provider>
+    <Auth0Provider
+      domain="dev-qdeojlzi.us.auth0.com"
+      clientId="zErUpMnj7jiMwuIYI7UD1ZAPvtBOvBZP"
+      redirectUri={window.location.origin}
+      audience={"https://api.matoa.com"}
+      scope={"openid profile email"}
+    >
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    </Auth0Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
